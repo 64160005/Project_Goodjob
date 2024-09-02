@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Good Job</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            background-color: #1ABC9C;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: #1ABC9C;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+            min-height: 400px; /* ปรับความสูงขั้นต่ำตามความต้องการ */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .header {
+            background-color: #1ABC9C;
+            padding: 10px;
+            text-align: center;
+        }
+        .logo {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+        .advertisement {
+            background-color: #BDC3C7;
+            padding: 50px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            color: black;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn {
+            width: 45%;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+        .btn-user {
+            background-color: #FFFFFF;
+            color: #2C3E50;
+        }
+        .btn-employer {
+            background-color: #16A085;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="public/images/Logo_Goodjob.png" alt="Good Job Logo" class="logo"> <!-- Replace with your logo -->
+        </div>
+        <div class="advertisement">
+            รูปเลื่อนโฆษณา
+        </div>
+        <div class="buttons">
+            <a href="/register-user" class="btn btn-user">สมัครสมาชิก</a>
+            <a href="/register-employer" class="btn btn-employer">สมัครผู้ประกอบการ</a>
+            <a href="/login" class="btn btn-employer">ล็อคอิน</a>
+        </div>
+    </div>
+</body>
+</html>
