@@ -1,32 +1,28 @@
 const express = require('express');
+const app = express();
 const path = require('path');
-const session = require('express-session');
+const flash = require('express-flash');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 const dbConnection = require('./database');
 const { body, validationResult } = require('express-validator');
+const session = require('express-session');
 
-const app = express();
-app.use(express.urlencoded({ extended: false }));
 
 // SET OUR VIEWS AND VIEW ENGINE
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
 // APPLY COOKIE SESSION MIDDLEWARE
 app.use(session({
-  secret: 'your_secret_key',
+  secret: 'keyboard',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { maxAge: 60*60*1000 }
 }));
+app.use(flash());
 
-app.use((req, res, next) => {
-  res.locals.isLoggedIn = req.session.isLoggedIn;
-  next();
-});
-
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs'); 
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // DECLARING CUSTOM MIDDLEWARE
 const ifNotLoggedin = (req, res, next) => {
@@ -166,61 +162,8 @@ app.post('/register-employer', ifLoggedin, [
 });
 
 // Login page route
-app.get('/login', (req, res) => {
-  res.render('login', { login_errors: [] });
-});
-
-app.post('/login_user', [
-  // Validate and check if the email exists in the database
-  body('user_email').isEmail().withMessage('Invalid Email Address!').custom(async (value) => {
-      const [rows] = await dbConnection.query('SELECT email FROM users WHERE email=?', [value]);
-      if (rows.length === 1) {
-          return true;
-      }
-      return Promise.reject('Invalid Email Address!');
-  }),
-  // Validate that the password field is not empty
-body('user_pass', 'Password is empty!').trim().not().isEmpty(),
-], async (req, res) => {
-  const validation_result = validationResult(req);
-  const { user_pass, user_email } = req.body;
-  console.log("User data:", { user_pass, user_email }); // Logging user data
-
-  // If there are validation errors, render the login page with errors
-  if (!validation_result.isEmpty()) {
-    const allErrors = validation_result.errors.map(error => error.msg);
-    console.error("Validation errors:", allErrors); // Logging validation errors
-    return res.render('login', {
-      login_errors: allErrors
-    });
-  }
-
-  try {
-    // Query the database to get the user data by email
-    const [rows] = await dbConnection.query("SELECT * FROM `users` WHERE `email`=?", [user_email]);
-    if (rows.length > 0) {
-      // Compare the provided password with the hashed password in the database
-      const isPasswordMatch = bcrypt.compareSync(user_pass, rows[0].password);
-      if (isPasswordMatch === true) {
-        console.log("Login result:", rows[0]);
-        req.session.isLoggedIn = true;
-        req.session.userID = rows[0].id;
-        return res.redirect('/home-user'); // Redirect to the home-user page
-      } else {
-        return res.render('login', {
-          login_errors: ['Invalid Password!']
-        });
-      }
-    } else {
-      return res.render('login', {
-        login_errors: ['Invalid Email Address!']
-      });
-    }
-  } catch (err) {
-    console.error("Database query error:", err); // Logging error if any database query fails
-    return res.status(500).send('Internal Server Error');
-  }
-});
+app.get('/login' , require('./routes/login'));
+app.post('/loginPost', require('./routes/login'));
 
 // Home route for logged-in users
 app.get('/home-user', (req, res) => {
@@ -230,6 +173,7 @@ app.get('/home-user', (req, res) => {
       res.redirect('/login');
   }
 });
+
 
 // LOGOUT
 app.get('/logout', (req, res) => {
