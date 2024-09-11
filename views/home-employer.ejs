@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - User</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, Employer!</h2>
+        <p>Your employer ID is: <%= employerID %></p>
+        <div>
+            <div>
+                <h3>Quick Actions</h3>
+                <ul>
+                    <li><a href="/employer/post-job">Post a New Job</a></li>
+                    <li><a href="/employer/view-applications">View Job Applications</a></li>
+                    <li><a href="/employer/manage-jobs">Manage Posted Jobs</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Dashboard</h3>
+                <div>
+                    <div>
+                        <h5>Job Postings</h5>
+                        <p>Active Jobs: 5</p>
+                        <p>Total Applications: 23</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+</body>
+</html>

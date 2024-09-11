@@ -18,6 +18,15 @@
                 <label for="user_pass">Password:</label>
                 <input type="password" class="form-control" id="user_pass" name="user_pass" required>
             </div>
+            <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+                <div class="alert alert-danger">
+                    <ul>
+                        <% errors.forEach(function(error) { %>
+                            <li><%= error.msg %></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            <% } %>
             <button type="submit" class="login-button">Login</button>
         </form>
     </div>
